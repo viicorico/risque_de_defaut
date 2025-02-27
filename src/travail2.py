@@ -38,6 +38,7 @@ def simuler_S_Nmc(Nmc):
     plt.xlabel("Temps (t)")
     plt.ylabel("S(t)")
     plt.title(f"Simulation de {Nmc} trajectoires de S(t)")
+    plt.savefig("../images/travail2/plot_simulation_S_t.png")  # Enregistrement en PNG
     plt.show()
 
 simuler_S_Nmc(10000)
@@ -84,4 +85,5 @@ plt.xlabel("x")
 plt.ylabel("F_X(x) = P(X ≤ x)")
 plt.title(f"Fonction de répartition de X = S_T avec le seuil B= {B}")
 plt.grid()
+plt.savefig("../images/travail2/plot_fonction-repartition.png")  # Enregistrement en PNG
 plt.show()
