@@ -41,7 +41,6 @@ def simuler_S_Nmc(Nmc):
     plt.savefig("../images/travail2/plot_simulation_S_t.png")  # Enregistrement en PNG
     plt.show()
 
-simuler_S_Nmc(10000)
 
 # Calculer X = S_T - B pour Nmc simulations
 def tab_X(Nmc, B):
@@ -51,7 +50,7 @@ def tab_X(Nmc, B):
         X.append(S_T - B)
     return X
 
-def F(X, a, b, Nx, Nmc):
+def fonction_repartition(X, a, b, Nx, Nmc):
     x = []
     proba = []
 
@@ -67,23 +66,50 @@ def F(X, a, b, Nx, Nmc):
 
     return x, proba
 
-# Paramètres de la simulation
-Nmc = 10000
-B = 50  # Seuil
-X = tab_X(Nmc, B)
+def densite_empirique(X, a, b, Nx, Nmc):
+    proba = []
+    x = []
+    for i in range(0, Nx):
+        x.append(a + (b - a) * i / Nx)
+        compteur = 0
 
-# Définir les bornes a et b
-a, b = min(X), max(X)
+        for j in range(1, Nmc):
+            if (X[j] <= x[i] + (b - a) / Nx and x[i] < X[j]):
+                compteur += 1
+        proba.append(compteur / (((b - a) / Nx) * Nmc))
+    return (x, proba)
 
-# Calcul de la fonction de répartition empirique
-Nx = 100
-x, proba = F(X, a, b, Nx, Nmc)
 
-# Affichage
-plt.plot(x, proba)
-plt.xlabel("x")
-plt.ylabel("F_X(x) = P(X ≤ x)")
-plt.title(f"Fonction de répartition de X = S_T avec le seuil B= {B}")
-plt.grid()
-plt.savefig("../images/travail2/plot_fonction-repartition.png")  # Enregistrement en PNG
-plt.show()
+def tracer_fonction_repartition(X, Nx, Nmc, B, save_path=None):
+    a, b = min(X), max(X)
+    x, proba = fonction_repartition(X, a, b, Nx, Nmc)
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(x, proba, label="F_X(x) = P(X ≤ x)", color='blue')
+    plt.xlabel("x")
+    plt.ylabel("F_X(x)")
+    plt.title("Fonction de répartition empirique de X")
+    plt.grid()
+    plt.legend()
+
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight')
+    plt.show()
+
+
+def tracer_densite(X, Nx, Nmc, B, save_path=None):
+    """ Affiche la densité empirique de X avec une boucle. """
+    a, b = min(X), max(X)
+    x, proba = densite_empirique(X, a, b, Nx, Nmc)
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(x, proba, label="Densité empirique de X", color='red')
+    plt.xlabel("x")
+    plt.ylabel("f_X(x)")
+    plt.title("Densité empirique de X")
+    plt.grid()
+    plt.legend()
+
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight')
+    plt.show()
