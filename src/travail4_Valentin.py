@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # Paramètres globaux
 S0 = 100  # Prix initial de l'actif
 sigma = 0.4  # Volatilité
-r = 0.05  # Taux d'intérêt (supposé non nul pour plus de réalisme)
+r = 0  # Taux d'intérêt (supposé non nul pour plus de réalisme)
 Nmc = 1000000  # Nombre de simulations Monte-Carlo
 
 # Fonction pour simuler S_T
