@@ -133,7 +133,7 @@ for nom, func in compositions.items():
         alpha_i, beta_i = func(i)
         V0 += alpha_i * call(S0, K, sigma, T) + beta_i * put(S0, K, sigma, T)
 
-    for _ in range(Nmc):
+    for j in range(Nmc):
         Vt = 0
         for i in range(I0):
             alpha_i, beta_i = func(i)
