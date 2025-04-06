@@ -1,6 +1,8 @@
 import numpy as np
 import math
 
+from matplotlib import pyplot as plt
+
 # paramètres
 S0 = 100
 K = 100
@@ -87,4 +89,65 @@ for alpha_ in valeurs_alpha:
     print(f"  var_port_tri={v_port:.2f}")
     print(f"  cvar_port={c_port:.2f}")
     print(f"  var_port_rm={rm_port:.2f}")
+    print()
+
+
+# question 2 : tracer la distribution conditionnelle des pertes > VaR99%
+alpha_c = 0.99
+var_cond = np.percentile(pertes_port, 100 * alpha_c)
+pertes_extremes = pertes_port[pertes_port > var_cond]
+
+# tracer l'histogramme des pertes extrêmes
+plt.figure(figsize=(7,4))
+plt.hist(pertes_extremes, bins=30, color='darkred', alpha=0.7, edgecolor='black')
+plt.title("distribution conditionnelle : pertes > VaR99%")
+plt.xlabel("perte")
+plt.ylabel("fréquence")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# compositions possibles
+def composition_short(i):
+    return -10, -5
+
+def composition_long(i):
+    return 10, 5
+
+def composition_mixte(i):
+    return (10, 5) if i < I0 // 2 else (-10, -5)
+
+compositions = {
+    "Short": composition_short,
+    "Long": composition_long,
+    "Mixte": composition_mixte
+}
+
+# simulation pour chaque composition
+resultats = {}
+
+for nom, func in compositions.items():
+    pertes = []
+    V0 = 0
+    for i in range(I0):
+        alpha_i, beta_i = func(i)
+        V0 += alpha_i * call(S0, K, sigma, T) + beta_i * put(S0, K, sigma, T)
+
+    for _ in range(Nmc):
+        Vt = 0
+        for i in range(I0):
+            alpha_i, beta_i = func(i)
+            S_Ti = simuler_ST(S0, sigma, T)
+            Vt += alpha_i * call(S_Ti, K, sigma, T) + beta_i * put(S_Ti, K, sigma, T)
+        pertes.append(V0 - Vt)
+
+    pertes = np.array(pertes)
+    var99, cvar99 = var_cvar(pertes, 0.99)
+    resultats[nom] = (var99, cvar99)
+
+# affichage lisible
+for nom, (var, cvar) in resultats.items():
+    print(f"composition: {nom}")
+    print(f"  var = {float(var):.2f}")
+    print(f"  cvar = {float(cvar):.2f}")
     print()
