@@ -107,7 +107,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# compositions possibles
+# question 3 : etude de l'influence de la composition du portefeuille
 def composition_short(i):
     return -10, -5
 
@@ -123,7 +123,6 @@ compositions = {
     "Mixte": composition_mixte
 }
 
-# simulation pour chaque composition
 resultats = {}
 
 for nom, func in compositions.items():
@@ -145,7 +144,6 @@ for nom, func in compositions.items():
     var99, cvar99 = var_cvar(pertes, 0.99)
     resultats[nom] = (var99, cvar99)
 
-# affichage lisible
 for nom, (var, cvar) in resultats.items():
     print(f"composition: {nom}")
     print(f"  var = {float(var):.2f}")
