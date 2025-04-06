@@ -75,21 +75,27 @@ for _ in range(Nmc):
 pertes_call = np.array(pertes_call)
 pertes_port = np.array(pertes_port)
 
-# affichage des résultats
+# affichage des résultats pour chaque niveau de confiance alpha_
 for alpha_ in valeurs_alpha:
+    # calcul de la var et cvar par méthode de tri (ordonnancement) pour le call seul
     v_call, c_call = var_cvar(pertes_call, alpha_)
+    # calcul de la var et cvar pour le portefeuille complet (call + put)
     v_port, c_port = var_cvar(pertes_port, alpha_)
+    # estimation de la var du call seul par la méthode robbins-monro
     rm_call = robbins_monro(pertes_call, alpha_)
+    # estimation de la var du portefeuille par robbins-monro (résultat souvent imprécis)
     rm_port = robbins_monro(pertes_port, alpha_)
 
+    # affichage structuré des résultats
     print(f"α={alpha_}")
-    print(f"  var_call_tri={v_call:.2f}")
-    print(f"  cvar_call={c_call:.2f}")
-    print(f"  var_call_rm={rm_call:.2f}")
-    print(f"  var_port_tri={v_port:.2f}")
-    print(f"  cvar_port={c_port:.2f}")
-    print(f"  var_port_rm={rm_port:.2f}")
+    print(f"  var_call_tri={v_call:.2f}")   # var du call (tri)
+    print(f"  cvar_call={c_call:.2f}")      # cvar du call (tri)
+    print(f"  var_call_rm={rm_call:.2f}")   # var du call (robbins-monro)
+    print(f"  var_port_tri={v_port:.2f}")   # var du portefeuille (tri)
+    print(f"  cvar_port={c_port:.2f}")      # cvar du portefeuille (tri)
+    print(f"  var_port_rm={rm_port:.2f}")   # var du portefeuille (robbins-monro)
     print()
+
 
 
 # question 2 : tracer la distribution conditionnelle des pertes > VaR99%
@@ -99,10 +105,10 @@ pertes_extremes = pertes_port[pertes_port > var_cond]
 
 # tracer l'histogramme des pertes extrêmes
 plt.figure(figsize=(7,4))
-plt.hist(pertes_extremes, bins=30, color='darkred', alpha=0.7, edgecolor='black')
+plt.hist(pertes_extremes, density = 'true', bins=30, color='darkred', alpha=0.7, edgecolor='black')
 plt.title("distribution conditionnelle : pertes > VaR99%")
-plt.xlabel("perte")
-plt.ylabel("fréquence")
+plt.xlabel("Perte")
+plt.ylabel("Fréquence")
 plt.grid(True)
 plt.tight_layout()
 plt.show()
@@ -144,8 +150,14 @@ for nom, func in compositions.items():
     var99, cvar99 = var_cvar(pertes, 0.99)
     resultats[nom] = (var99, cvar99)
 
-for nom, (var, cvar) in resultats.items():
-    print(f"composition: {nom}")
-    print(f"  var = {float(var):.2f}")
-    print(f"  cvar = {float(cvar):.2f}")
-    print()
+    # tracer la distribution avec la VaR à 99%
+    plt.figure(figsize=(6, 4))
+    plt.hist(pertes, density = 'true', bins=50, alpha=0.7, color='steelblue', edgecolor='black')
+    plt.axvline(var99, color='red', linestyle='--', label=f"VaR 99% = {var99:.2f}")
+    plt.title(f"Densité des pertes - {nom}")
+    plt.xlabel("Perte")
+    plt.ylabel("Densité")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
