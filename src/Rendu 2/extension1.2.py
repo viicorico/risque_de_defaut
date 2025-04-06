@@ -3,24 +3,22 @@ import matplotlib.pyplot as plt
 
 # paramètres du modèle
 nb_entreprises = 125
-duree = 1.0  # en années
-nb_pas = 12  # 1 observation par mois
-dt = duree/nb_pas
+T = 1.0  # en années
+N = 12  # 1 observation par mois
+dt = T/N
 val_init = 100
 seuil_defaut = 50
 volatilite = 0.4
 taux_recouvrement = 0.3
-nb_simu = 1000
+Nmc = 1000
 
-# instants d'observation
-temps = [k*dt for k in range(nb_pas+1)]
+t = [k*dt for k in range(N+1)]
 
-# pour stocker les résultats
 liste_defauts = []
 liste_dettes = []
 
 # simulations
-for _ in range(nb_simu):
+for n in range(Nmc):
     defauts = 0
     dette = 0
 
@@ -28,7 +26,7 @@ for _ in range(nb_simu):
         s = val_init
         a_defaut = False
 
-        for t in temps:
+        for i in t:
             z = np.random.randn()
             s = s*np.exp(-0.5*volatilite**2*dt + volatilite*np.sqrt(dt)*z)
 
@@ -40,7 +38,6 @@ for _ in range(nb_simu):
     liste_defauts.append(defauts)
     liste_dettes.append(dette)
 
-# on passe en numpy pour les calculs
 defauts_arr = np.array(liste_defauts)
 dettes_arr = np.array(liste_dettes)
 
@@ -50,7 +47,7 @@ probas = []
 
 for k in valeurs_k:
     nb = np.sum(defauts_arr >= k)
-    proba = nb/nb_simu
+    proba = nb/Nmc
     probas.append(proba)
 
 # esperance de la dette sachant nb defauts > k

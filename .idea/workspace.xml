@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="52885099-b809-4143-984b-9cfe75d0eccc" name="Changes" comment="structure projet">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Rendu 2/Extension2.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Rendu 2/Extension2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Rendu 2/extension1.2.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Rendu 2/extension1.2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +35,7 @@
   "keyToString": {
     "Python.Extension2.executor": "Run",
     "Python.RobbinsMonro.executor": "Run",
+    "Python.extension1.2.executor": "Run",
     "Python.main_travail2.executor": "Run",
     "Python.travail2.executor": "Run",
     "Python.travail3.executor": "Run",
@@ -166,7 +166,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743972139134</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="structure projet">
+      <option name="closed" value="true" />
+      <created>1743972973271</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1743972973271</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
